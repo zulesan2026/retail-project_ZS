@@ -1,7 +1,7 @@
 --1-DDL 
 
 --creación de esquema 
-create schema retail_project;
+create database retail_project;
 
 
 --creación de tablas
@@ -16,21 +16,22 @@ edad int check (edad>=18)
 
 create table productos (
 id_producto serial primary key,
-precio decimal(10,2) not null check (precio > 0),
 nombre varchar(100) not null,
+categoria varchar (50) not null,
+precio decimal(10,2) not null check (precio > 0),
 stock int not null check (stock >= 0)
 );
 
 create table ventas (
 id_venta serial primary key,
 cantidad int not null check (cantidad > 0),
-fecha_venta timestamp not null default current_date,
+fecha_venta timestamp not null default current_timestamp,
 id_cliente int not null references clientes (id_cliente),
 id_producto int not null references productos (id_producto)
 );
 
 
-select * from ventas
+select * from ventas;
 
 --2 DML
 
@@ -39,20 +40,20 @@ begin;
 -- Clientes
 INSERT INTO clientes (nombre, email, edad)
 values
-    ('Ana García', 'ana@email.com', 25),
-    ('Luis Fernández', 'luis@email.com', 30),
-    ('Marina Ruiz', 'marina@email.com', 22),
-    ('Carlos Pérez', 'carlos@email.com', 40),
-    ('Sofía Torres', 'sofia@email.com', 19);
+    ('Lalo Landa', 'lalolanda@gmail.com', 45),
+    ('Lou Miller', 'loumiller@gmail.com', 30),
+    ('Disco Stu', 'discostu@gmail.com', 62),
+    ('Eleanor Abernathy', 'lalocadelosgatos@gmail.com', 70),
+    ('Moe Szyslak', 'elbardemoe@gmail.com', 49);
 
 -- Productos
-INSERT INTO productos (nombre, precio, stock) 
+INSERT INTO productos (nombre, categoria, precio, stock) 
 values
-    ('Teclado Mecánico', 85.50, 20),
-    ('Mouse Gaming', 42.00, 35),
-    ('Monitor 24"', 199.99, 10),
-    ('Webcam HD', 35.00, 15),
-    ('Auriculares BT', 60.50, 25);
+    ('teclado mecánico', 'periféricos', 85.50, 20),
+    ('mouse gaming', 'periféricos', 42.00, 35),
+    ('monitor 24 pulgadas', 'monitores', 199.99, 10),
+    ('webcam hd', 'accesorios', 35.00, 15),
+    ('auriculares bluetooth', 'audio', 60.50, 25);
 
 -- Ventas 
 INSERT INTO ventas (id_cliente, id_producto, cantidad)
@@ -71,20 +72,13 @@ select * from ventas;
 
 -- Update
 
-select * from productos clientes
-where nombre in ('Mouse Gaming', 'Auriculares BT');
-
-
 update productos
 set precio = precio * 1.10
-where nombre in ('Mouse Gaming', 'Auriculares BT');
+where categoria = 'periféricos';
 
 select * from productos;
 
 -- Delete
-
-select * from ventas
-where id_venta = 5;
 
 
 delete from ventas 
